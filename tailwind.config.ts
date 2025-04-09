@@ -59,6 +59,7 @@ export default {
         "heading-xs": ["16px", { lineHeight: "120%", fontWeight: "700" }],
 
         // Body - Inter
+        "body-tag": ["12px", { lineHeight: "100%", fontWeight: "400" }],
         "body-md": ["16px", { lineHeight: "150%", fontWeight: "400" }],
         "body-sm": ["14px", { lineHeight: "150%", fontWeight: "400" }],
         "body-xs": ["12px", { lineHeight: "150%", fontWeight: "400" }],
