@@ -1,7 +1,7 @@
 import { ArrowRight, Clock, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "../../../../components/ui/button";
 export function HeroSection() {
   return (
     <section className="container relative flex items-center justify-center mt-16">
