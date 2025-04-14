@@ -1,5 +1,6 @@
 import { Search } from "@/components/search";
 import { useRouter } from "next/router";
+import { PostCard } from "./post-card";
 
 export function BlogList() {
   const router = useRouter();
@@ -24,6 +25,14 @@ export function BlogList() {
           <Search />
         </div>
       </header>
+      <PostCard
+        title="Transformando seu negócio em uma loja virtual"
+        author={{ avatar: "/assets/primeiro-post.png", name: "Aspen Dokidis" }}
+        date="22/09/24"
+        description="Se você está buscando uma maneira simples e eficaz de vender seus produtos online, o Site.Set é a solução perfeita para você. Criar uma loja virtual de sucesso nunca foi tão fácil. Com nossa plataforma intuitiva, você pode criar um site profissional para sua loja em minutos, sem precisar de conhecimentos técnicos."
+        image="/assets/primeiro-post.png"
+        slug="primeiro-post"
+      />
     </div>
   );
 }
