@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { PostCard } from "./post-card";
 import { PostGridCard } from "./post-grid-card";
 import { allPosts } from "contentlayer/generated";
+import { Inbox } from "lucide-react";
 
 export function BlogList() {
   const router = useRouter();
@@ -12,7 +13,13 @@ export function BlogList() {
     ? `Resultados de busca para ${query}`
     : "Dicas e estratégias para impulsionar seu negócio";
 
-  const posts = allPosts;
+  const posts = query
+    ? allPosts.filter((post) =>
+        post.title.toLocaleLowerCase()?.includes(query.toLocaleLowerCase())
+      )
+    : allPosts;
+
+  const hasPosts = posts.length > 0;
 
   return (
     <div className="flex flex-col py-24 flex-grow h-full">
@@ -29,22 +36,36 @@ export function BlogList() {
           <Search />
         </div>
       </header>
-      <PostGridCard>
-        {posts.map(({ _id, title, description, slug, image, date, author }) => (
-          <PostCard
-            key={_id}
-            title={title}
-            author={{
-              avatar: author.avatar,
-              name: author.name,
-            }}
-            date={new Date(date).toLocaleDateString("pt-BR")}
-            description={description}
-            image={image}
-            slug={slug}
-          />
-        ))}
-      </PostGridCard>
+
+      {hasPosts && (
+        <PostGridCard>
+          {posts.map(
+            ({ _id, title, description, slug, image, date, author }) => (
+              <PostCard
+                key={_id}
+                title={title}
+                author={{
+                  avatar: author.avatar,
+                  name: author.name,
+                }}
+                date={new Date(date).toLocaleDateString("pt-BR")}
+                description={description}
+                image={image}
+                slug={slug}
+              />
+            )
+          )}
+        </PostGridCard>
+      )}
+
+      {!hasPosts && (
+        <div className="container px-8">
+          <div className="flex flex-col items-center justify-center gap-8 border-dashed border-2 border-gray-300 p-8 md:p-12 rounded-lg">
+            <Inbox className="size-12 text-cyan-100" />
+            <p className="text-gray-100 text-center">Nenhum post encontrado.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
