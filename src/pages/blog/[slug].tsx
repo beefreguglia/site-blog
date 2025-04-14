@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Avatar } from "@/components/avatar";
 import { Markdown } from "@/components/markdown";
+import { Button } from "@/components/ui/button";
+import { useShare } from "@/hooks";
 
 export default function PostPage() {
   const router = useRouter();
@@ -20,12 +22,19 @@ export default function PostPage() {
     (post) => post.slug.toLocaleLowerCase() === slug?.toLocaleLowerCase()
   )!;
   const publishedDate = new Date(post?.date).toLocaleDateString("pt-BR");
+  const postUrl = `http://localhost:3000/blog/${slug}`;
+
+  const { shareButtons } = useShare({
+    url: postUrl,
+    title: post?.title ?? "",
+    text: post?.description ?? "",
+  });
 
   return (
-    <main className="mt-32">
+    <main className="mt-32 text-gray-100">
       <div className="container space-y-12 px-4 md:px-8">
         <Breadcrumb>
-          <BreadcrumbList className="text-gray-100">
+          <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild className="text-action-sm">
                 <Link href="/blog">Blog</Link>
@@ -74,6 +83,26 @@ export default function PostPage() {
               <Markdown content={post?.body.raw} />
             </div>
           </article>
+          <aside className="space-y-6">
+            <div className="rounded-lg bg-gray-700 md:px-6">
+              <h2 className="mb-4 text-heading-xs text-gray-100">
+                Compartilhar
+              </h2>
+              <div className="space-y-3">
+                {shareButtons.map((provider) => (
+                  <Button
+                    key={provider.provider}
+                    className="w-full justify-start gap-2"
+                    onClick={() => provider.action()}
+                    variant="outline"
+                  >
+                    {provider.icon}
+                    {provider.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </main>

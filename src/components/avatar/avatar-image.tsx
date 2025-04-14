@@ -8,28 +8,24 @@ type AvatarImageProps = Omit<ImageProps, "height" | "width"> & {
 };
 
 const avatarSize = {
-  xs: "size-5",
-  sm: "size-9",
+  xs: "h-5 w-5",
+  sm: "h-9 w-9",
 };
 
-export function AvatarImage({
+export const AvatarImage = ({
   src,
   alt,
   size = "xs",
   ...rest
-}: AvatarImageProps) {
+}: AvatarImageProps) => {
   return (
-    <div>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className={cn(
-          "relative overflow-hidden rounded-full border-blue-200 border",
-          avatarSize[size]
-        )}
-        {...rest}
-      />
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-full border-blue-200 border",
+        avatarSize[size]
+      )}
+    >
+      <Image {...rest} src={src} alt={alt} fill />;
     </div>
   );
-}
+};
