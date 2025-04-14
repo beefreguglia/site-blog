@@ -1,6 +1,7 @@
 import { Inter, PT_Sans_Caption } from "next/font/google";
 import { Header } from "./header";
 import { Footer } from "./footer";
+import { CallToActionSection } from "./call-to-action-section";
 
 
 type LayoutProps = {
@@ -26,6 +27,7 @@ export const Layout = ({ children }: LayoutProps) => {
     >
       <Header />
       <main className="flex-1 flex flex-col mt-10 mb-12">{children}</main>
+      <CallToActionSection />
       <Footer />
     </div>
   );
