@@ -1,7 +1,9 @@
+import { Post } from "contentlayer/generated";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { allPosts } from "contentlayer/generated";
+
+import { Avatar } from "@/components/avatar";
+import { Markdown } from "@/components/markdown";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,25 +11,21 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Avatar } from "@/components/avatar";
-import { Markdown } from "@/components/markdown";
 import { Button } from "@/components/ui/button";
 import { useShare } from "@/hooks";
 
-export function Post() {
-  const router = useRouter();
+export type PostPageProps = {
+  post: Post;
+};
 
-  const slug = router.query.slug as string;
-  const post = allPosts.find(
-    (post) => post.slug.toLocaleLowerCase() === slug?.toLocaleLowerCase()
-  )!;
+export const PostPage = ({ post }: PostPageProps) => {
   const publishedDate = new Date(post?.date).toLocaleDateString("pt-BR");
-  const postUrl = `http://localhost:3000/blog/${slug}`;
+  const postUrl = `https://site.set/blog/${post.slug}`;
 
   const { shareButtons } = useShare({
     url: postUrl,
-    title: post?.title ?? "",
-    text: post?.description ?? "",
+    title: post?.title,
+    text: post?.description,
   });
 
   return (
@@ -42,16 +40,15 @@ export function Post() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <span className="text-blue-200 text-action-sm">
-                  {post?.title}
-                </span>
-              </BreadcrumbLink>
+              <span className="text-blue-200 text-action-sm">
+                {post?.title}
+              </span>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 lg:gap-12">
-          <article className="bg-gray-600 rounded-lg overflow-hidden border-gray-400 border">
+          <article className="bg-gray-600 rounded-lg overflow-hidden border-gray-400 border-[1px]">
             <figure className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
               <Image
                 src={post?.image ?? ""}
@@ -60,41 +57,46 @@ export function Post() {
                 className="object-cover"
               />
             </figure>
-            <header className="p-4 md:m-6 lg:p-12 pb-0">
-              <h1 className="mb-6 text-gray-100 text-balance text-heading-lg md:text-heading-xl lg:text-heading-xl">
+
+            <header className="p-4 md:p-6 lg:p-12 pb-0 mt-8 md:mt-12">
+              <h1 className="mb-8 text-balance text-heading-lg md:text-heading-xl lg:text-heading-xl">
                 {post?.title}
               </h1>
+
               <Avatar.Container>
                 <Avatar.Image
-                  src={post?.author.avatar ?? ""}
-                  alt={post?.title ?? ""}
+                  src={post?.author.avatar}
+                  alt={post?.title}
                   size="sm"
                 />
                 <Avatar.Content>
                   <Avatar.Title>{post?.author.name}</Avatar.Title>
                   <Avatar.Description>
-                    Publicado em
+                    Publicado em {""}
                     <time dateTime={post?.date}>{publishedDate}</time>
                   </Avatar.Description>
                 </Avatar.Content>
               </Avatar.Container>
             </header>
+
             <div className="prose prose-invert max-w-none px-4 mt-12 md:px-6 lg:px-12">
               <Markdown content={post?.body.raw} />
             </div>
           </article>
+
           <aside className="space-y-6">
-            <div className="rounded-lg bg-gray-700 md:px-6">
+            <div className="rounded-lg bg-gray-700">
               <h2 className="hidden md:block mb-4 text-heading-xs text-gray-100">
                 Compartilhar
               </h2>
+
               <div className="flex justify-between md:flex-col gap-2">
                 {shareButtons.map((provider) => (
                   <Button
                     key={provider.provider}
-                    className="w-fit md:w-full justify-start gap-2"
                     onClick={() => provider.action()}
                     variant="outline"
+                    className="w-fit md:w-full justify-start gap-2"
                   >
                     {provider.icon}
                     <span className="hidden md:block">{provider.name}</span>
@@ -107,4 +109,4 @@ export function Post() {
       </div>
     </main>
   );
-}
+};
