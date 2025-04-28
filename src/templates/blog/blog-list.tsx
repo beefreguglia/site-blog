@@ -1,3 +1,4 @@
+'use client'
 import { Search } from "@/components/search";
 import { Post } from "contentlayer/generated";
 import { Inbox } from "lucide-react";
@@ -35,7 +36,7 @@ export function BlogList({ posts }: BlogListProps) {
             </span>
 
             {/* Titulo */}
-            <h1 className="text-balance text-start md:text-left text-heading-lg md:text-heading-xl max-w-2xl text-gray-100">
+            <h1 className="text-start md:text-left text-heading-lg md:text-heading-xl max-w-2xl text-gray-100">
               {pageTitle}
             </h1>
           </div>
